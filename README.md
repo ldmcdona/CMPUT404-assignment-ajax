@@ -12,4 +12,6 @@ Contributors / Licensing
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
 
+Code Modified by Liam McDonald
 
+Collaboration: Fred - Told me to use fetch() and directed me to a few w3schools pages.
