@@ -23,7 +23,7 @@
     <script src="json2.js"></script>
   </head> 
   <body bgcolor="black" height="100%" width="100%"> 
-    <canvas id="c" width="100%" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas> 
+    <canvas id="c" width="100%" text-align="center" height="100%" style="-webkit-tap-highlight-color: transparent;"></canvas> 
     <script>
 var canvas = document.getElementById('c');
 var host = window.location.host;
@@ -42,9 +42,11 @@ function drawCircle(context,entity) {
         var x = entity["x"];
         var y = entity["y"];
         moveTo(x,y);
-        fillStyle = entity["colour"];
+        //fillStyle = entity["colour"];
+        fillStyle = "#727272";
         strokeStyle = fillStyle;
-        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
+        fill();  
         stroke();                               
     }
     //console.log(x, y);
@@ -55,7 +57,7 @@ function prepEntity(entity) {
         entity["colour"] = "#FF0000";
     }
     if (!entity["radius"]) {
-        entity["radius"] = 50;
+        entity["radius"] = 10;
     }
     return entity;
 }
@@ -63,7 +65,7 @@ function prepEntity(entity) {
 function clearFrame() {
     with(context) {
 	moveTo(0,0);
-	fillStyle = "#000";
+	fillStyle = "#e8bf9d";
 	fillRect(0,0,W,H);
     }
 
@@ -131,7 +133,7 @@ function addEntity(entity, data) {
 var counter = 0;
 function addEntityWithoutName(data) {
     //var name = "X"+Math.floor((Math.random()*100)+1);
-    var name = "X"+(counter++)%100;
+    var name = "X"+(counter++)%300;
     addEntity(name,data);
 }
 
@@ -262,6 +264,10 @@ function update() {
 }
 
 // 30 frames per second
+
+context.rect(0,0,W,H);
+context.fillStyle = "#e8bf9d";
+context.fill();
 setInterval( update, 1000/30.0);
 
 
