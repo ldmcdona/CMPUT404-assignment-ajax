@@ -1,0 +1,17 @@
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(objects),
+    })
+    .then(function(resp) {
+        if (resp.status === 200) {
+            console.log("Working");
+        } else {
+            console.log(resp);
+        }
+    })
+    .catch(function(err) {
+        console.log("Code Error : -S" + err)
+    })

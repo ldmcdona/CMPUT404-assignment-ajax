@@ -32,27 +32,6 @@ var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
 
-function sendRequest(url, objects){
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(objects),
-    })
-    .then(function(resp) {
-        if (resp.status === 200) {
-            console.log("Working");
-        } else {
-            console.log("Not 200 responce");
-        }
-    })
-    .catch(function(err) {
-        console.log("Code Error : -S" + err)
-    })
-}
-
-
 world = {};
 
 //XXX: TODO Make this prettier!
@@ -62,17 +41,13 @@ function drawCircle(context,entity) {
         lineWidth = 3;
         var x = entity["x"];
         var y = entity["y"];
-        //moveTo(x,y);
-        //fillStyle = entity["colour"];
+        moveTo(x,y);
+        fillStyle = entity["colour"];
         strokeStyle = fillStyle;
-        //arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
-        //moveTo(x, y);
-        lineTo(x, y);
-        moveTo(x, y);
-        stroke();  
-        closePath();                              
+        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);  
+        stroke();                               
     }
-    console.log(x, y);
+    //console.log(x, y);
 }
 
 function prepEntity(entity) {
@@ -143,7 +118,14 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     //XXX: Send a XHTML Request that updates the entity you just  modified!
-
+    fetch("/entity/" + entity, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+    //console.log(entity)
 }
 
 var counter = 0;
@@ -267,7 +249,15 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-    sendRequest("/", 0);
+    fetch("/world").then(function(resp){
+        if (resp.status === 200) {
+            //console.log("Working");
+            resp.json().then(function(body){
+                world = body;
+                drawNext = true;
+            })
+        }
+    })
     drawFrame();
 }
 
